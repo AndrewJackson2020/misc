@@ -1,0 +1,4 @@
+
+```bash
+odyssey ./odyssey.conf
+```
