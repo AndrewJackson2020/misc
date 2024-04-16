@@ -1,0 +1,23 @@
+FROM rockylinux:9
+
+RUN dnf --assumeyes install epel-release
+RUN dnf --assumeyes install git
+RUN dnf --assumeyes install make 
+RUN dnf --assumeyes install openssl 
+RUN dnf --assumeyes install openssl-devel
+RUN dnf --assumeyes install libtool
+RUN dnf --assumeyes install libevent-devel
+RUN dnf --assumeyes install pandoc
+RUN dnf --assumeyes install postgresql-server
+RUN dnf --assumeyes install openldap-clients
+RUN dnf --assumeyes install openldap-servers
+RUN dnf --assumeyes install openldap-devel
+
+RUN useradd -ms /bin/bash pgbouncer
+WORKDIR /home/pgbouncer
+COPY --chmod=700 --chown=pgbouncer ./build.sh .
+
+RUN /home/pgbouncer/build.sh build
+USER pgbouncer
+ENTRYPOINT /bin/bash
+CMD /home/pgbouncer/build.sh run
