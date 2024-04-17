@@ -8,10 +8,11 @@ podman build \
 Run container
 ```bash
 podman run \
+    --detach \
     --volume $(pwd)/pg_hba.conf:/home/pgbouncer/config/pg_hba.conf \
     --volume $(pwd)/pgbouncer.ini:/home/pgbouncer/config/pgbouncer.ini \
     --network=host \
-    pgbouncer_custom
+    pgbouncer_custom:latest
 ```
 
 
@@ -22,6 +23,6 @@ podman run \
     --volume $(pwd)/pgbouncer.ini:/home/pgbouncer/config/pgbouncer.ini \
     --network=host \
     -it \
-    pgbouncer_custom \
+    pgbouncer_custom:latest \
     /bin/bash
 ```

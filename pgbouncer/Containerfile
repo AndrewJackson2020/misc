@@ -19,5 +19,4 @@ COPY --chmod=700 --chown=pgbouncer ./build.sh .
 
 RUN /home/pgbouncer/build.sh build
 USER pgbouncer
-ENTRYPOINT /bin/bash
 CMD /home/pgbouncer/build.sh run
