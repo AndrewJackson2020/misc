@@ -2,22 +2,34 @@
 py_library(
     name = "lib",
     srcs = ["lib.py"],
-    srcs_version = "PY2AND3",
 )
 
-sh_binary(
-    name = "whatever.sh",
+genrule(
+    name = "terraform",
+    outs = ["terraform"],
+    cmd = r"""
+	wget https://releases.hashicorp.com/terraform/1.8.1/terraform_1.8.1_linux_amd64.zip
+	unzip terraform_1.8.1_linux_amd64.zip
+    	cp terraform $(OUTS)	
+    """,
+    executable=True,
+)
+
+genrule(
+    name = "bash",
     srcs = ["bash/whatever.sh"],
+    outs = ["whatever.sh"],
+    cmd = r"""
+    	cp $(SRCS) $(OUTS)	
+    """,
+    executable=True,
 )
 
 py_binary(
     name = "bin",
     srcs = ["bin.py"],
-    srcs_version = "PY2AND3",
-    deps = [":lib"],
+    deps = [
+    	":lib",
+    ],
 )
 
-filegroup(
-    name = "srcs",
-    srcs = ["BUILD"] + glob(["**/*.py"]) + glob(["**/*.sh"]),
-)

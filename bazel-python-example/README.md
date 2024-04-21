@@ -5,7 +5,7 @@ Following commands show how to use this repo with bazel's py_runtime rule.
 Use the system-wide python interpreter.
 
 ``` shell
-$ bazel run :bin
+$ bazel run :*
 INFO: Analysed target //:bin (8 packages loaded).
 INFO: Found 1 target...
 Target //:bin up-to-date:
