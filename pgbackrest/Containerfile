@@ -1,0 +1,27 @@
+
+FROM rockylinux:9
+
+RUN dnf --assumeyes install tar
+RUN dnf --assumeyes install wget
+RUN dnf --assumeyes install make 
+RUN dnf --assumeyes install gcc 
+RUN dnf --assumeyes install postgresql-devel
+RUN dnf --assumeyes install openssl-devel 
+RUN dnf --assumeyes install libxml2-devel 
+RUN dnf --assumeyes install lz4-devel
+RUN dnf --assumeyes install libzstd-devel
+RUN dnf --assumeyes install bzip2-devel
+RUN dnf --assumeyes install dnf-plugins-core
+RUN dnf --assumeyes install epel-release
+RUN dnf config-manager --set-enabled crb
+RUN dnf --assumeyes install libyaml-devel
+RUN dnf --assumeyes install libssh2-devel
+
+RUN mkdir -p /build
+RUN wget -q -O - \
+       https://github.com/pgbackrest/pgbackrest/archive/release/2.51.tar.gz | \
+       tar zx -C /build
+
+
+RUN cd /build/pgbackrest-release-2.51/src && ./configure && make
+CMD /bin/bash
