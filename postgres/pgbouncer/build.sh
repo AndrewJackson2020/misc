@@ -3,8 +3,8 @@ set -e
 
 
 build () {
-	git clone https://github.com/greenplum-db/pgbouncer.git
-	cd pgbouncer
+	git clone https://github.com/zhaorui20005/pgbouncer-postgres.git
+	cd pgbouncer-postgres
  	git submodule init
 	git submodule update
 	./autogen.sh
