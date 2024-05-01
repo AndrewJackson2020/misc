@@ -3,7 +3,9 @@ set -e
 
 
 build () {
-	git clone https://github.com/zhaorui20005/pgbouncer-postgres.git
+	git clone \
+		--branch  zhaorui_ldap_for_upstream \
+		https://github.com/zhaorui20005/pgbouncer-postgres.git
 	cd pgbouncer-postgres
  	git submodule init
 	git submodule update
