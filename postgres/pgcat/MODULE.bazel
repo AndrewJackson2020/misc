@@ -1,0 +1,13 @@
+bazel_dep(name = "rules_oci", version = "1.7.5")
+bazel_dep(name = "rules_pkg", version = "1.0.1")
+
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+oci.pull(
+    name = "rocky9_image",
+    digest = "sha256:d7be1c094cc5845ee815d4632fe377514ee6ebcf8efaed6892889657e5ddaaa6",
+    image = "rockylinux",
+    platforms = [
+        "linux/amd64",
+    ],
+)
+use_repo(oci, "rocky9_image")
