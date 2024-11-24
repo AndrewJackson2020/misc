@@ -1,0 +1,53 @@
+
+FROM rockylinux:9
+
+RUN dnf --assumeyes update
+RUN dnf --assumeyes install git
+RUN dnf --assumeyes install npm
+
+RUN curl -sL https://rpm.nodesource.com/setup_18.x -o nodesource_setup.sh
+RUN bash nodesource_setup.sh
+RUN dnf --assumeyes remove nodejs
+RUN dnf --assumeyes install nodejs
+
+RUN npm install -g corepack
+
+RUN useradd pgadmin4
+USER pgadmin4
+
+RUN cd /home/pgadmin4 && git clone --depth=1 https://github.com/pgadmin-org/pgadmin4.git
+
+RUN cd /home/pgadmin4/pgadmin4/web && corepack enable
+RUN cd /home/pgadmin4/pgadmin4/web && yarn set version berry
+RUN cd /home/pgadmin4/pgadmin4/web && yarn set version 3
+RUN cd /home/pgadmin4/pgadmin4/web && yarn install
+RUN cd /home/pgadmin4/pgadmin4/web && yarn run bundle
+
+USER pgadmin4
+
+USER root
+RUN dnf install --assumeyes https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+RUN dnf -qy module disable postgresql
+RUN dnf install --assumeyes perl
+RUN dnf install --assumeyes postgresql17-server
+RUN dnf --enablerepo=crb install --assumeyes perl-IPC-Run
+RUN dnf install --assumeyes postgresql17-devel
+
+RUN dnf --assumeyes install python-devel
+RUN dnf --assumeyes install krb5-devel
+RUN dnf --assumeyes install automake
+RUN dnf --assumeyes install autoconf
+RUN dnf --assumeyes install make
+RUN dnf --assumeyes install g++
+RUN dnf --assumeyes install gcc
+
+USER pgadmin4
+RUN cd /home/pgadmin4/pgadmin4 && PATH=/usr/pgsql-17/bin:$PATH make install-python
+
+USER root
+RUN chown -R pgadmin4 /var/lib
+RUN chown -R pgadmin4 /var/log
+
+USER pgadmin4
+
+CMD source /home/pgadmin4/pgadmin4/venv/bin/activate && PGADMIN_SETUP_EMAIL=andrewjackson947@gmail.com PGADMIN_SETUP_PASSWORD=password python /home/pgadmin4/pgadmin4/web/pgAdmin4.py
