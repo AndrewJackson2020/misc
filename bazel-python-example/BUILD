@@ -3,6 +3,13 @@ load("@rules_pyvenv//:venv.bzl", "py_venv")
 load("@@example_deps//:requirements.bzl", "requirement", "data_requirement")
 load("@rules_python//python/pip_install:requirements.bzl", "compile_pip_requirements")
 load("@aspect_rules_py//py:defs.bzl", "py_binary", "py_library")
+load("@aspect_rules_py//py/private:py_venv.bzl", "py_venv")
+
+
+py_venv(
+    name = "py_venv_aspect",
+    deps = [":lib"],
+)
 
 py_library(
     name = "lib",
