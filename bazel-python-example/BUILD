@@ -2,6 +2,7 @@
 load("@rules_pyvenv//:venv.bzl", "py_venv")
 load("@@example_deps//:requirements.bzl", "requirement", "data_requirement")
 load("@rules_python//python/pip_install:requirements.bzl", "compile_pip_requirements")
+load("@aspect_rules_py//py:defs.bzl", "py_binary", "py_library")
 
 py_library(
     name = "lib",
