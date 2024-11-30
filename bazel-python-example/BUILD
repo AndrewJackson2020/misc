@@ -32,9 +32,22 @@ genrule(
     srcs = ["bash/whatever.sh"],
     outs = ["whatever.sh"],
     cmd = r"""
-    	cp $(SRCS) $(OUTS)	
+    	cp $(SRCS) $(OUTS)
     """,
     executable=True,
+)
+
+# TODO Not hermetic, maybe deadend
+genrule(
+    name = "build_venv",
+    outs = ["venv.tar"],
+    cmd = """
+	export BUILD_ENV_INPUT="$(location :_build_venv_bin_deps.json)"
+	./$(location :build_venv_bin) venv
+	tar czf venv.tar --directory=venv .
+	cp -r venv.tar $(OUTS)
+    """,
+    tools = [":build_venv_bin", "//:_build_venv_bin_deps.json"],
 )
 
 py_binary(
@@ -42,14 +55,14 @@ py_binary(
     srcs = ["bin.py"],
     deps = [
     	":lib",
+        "@@example_deps_polars//:pkg",
     ],
 )
 
 py_venv(
-    name = "venv",
+    name = "build_venv_bin",
     deps = [
         ":lib",
-        "@@example_deps_polars//:pkg",
     ],
 )
 

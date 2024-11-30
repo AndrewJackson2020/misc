@@ -1,5 +1,5 @@
 import lib
-
+import polars
 
 def main():
   """
@@ -9,6 +9,7 @@ def main():
   print("*****************************************")
   print("* The Python version running is : %s *" % python_version)
   print("*****************************************")
+  print(polars.__version__)
 
 
 if __name__ == "__main__":
